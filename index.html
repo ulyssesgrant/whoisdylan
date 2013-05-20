@@ -12,31 +12,25 @@ who is dylan koenig?
 </head>
 
 <body>
-<script type="text/javascript" src=jquery-1.9.1.min.js"></script>
+<!-- <script type="text/javascript" src="jquery&#45;1.9.1.min.js"></script> -->
 <canvas id="myCanvas"  style="border:1px solid #FDF6E3;">No canvas available! </canvas>
 <script>
 window.onload = function(){
 	var canvas = document.getElementById("myCanvas");
-	// canvas.width = canvas.clientWidth-100;
-	// canvas.height = canvas.clientHeight-100;
-	canvas.width = $(document).width();
-	canvas.height = $(document).height();
+	canvas.width = canvas.clientWidth-100;
+	canvas.height = canvas.clientHeight-100;
 }
 
 window.onresize = function(){
 	var canvas = document.getElementById("myCanvas");
-	// canvas.width = canvas.clientWidth-100;
-	// canvas.height = canvas.clientHeight-100;
-	canvas.width = $(document).width();
-	canvas.height = $(document).height();
+	canvas.width = canvas.clientWidth-100;
+	canvas.height = canvas.clientHeight-100;
 }
 </script>
 
 <script>
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
-ctx.globalAlpha=.7;
-
 var intervalId;
 var timerDelay = 20;
 var cx = 0;
@@ -70,7 +64,10 @@ function draw() {
 		ctx.fill();
 	}
 	ctx.fillStyle = "rgba(0,0,0,.75)";
-	ctx.fillRect(canvas.width/4.0,canvas.height/4.0,parseFloat((3.0/4.0)*canvas.width),parseFloat((3.0/4.0)*canvas.height));
+	var x = canvas.width*.25;
+	var y = canvas.height*.25;
+	ctx.fillRect(x,y,x*2,y*2);
+	// alert(x2 + ' ' + y2);
 }
 
 function updateMotion(circle) {
@@ -172,10 +169,29 @@ function onKeyDown(event) {
 
 function onMouseMove(event) {
 	if (quit) return;
-	mouseX = event.pageX - canvas.offsetLeft;
-	mouseY = event.pageY - canvas.offsetRight;
+	// mouseX = event.pageX - canvas.offsetLeft;
+	// mouseY = event.pageY - canvas.offsetTop;
+	mouseX = event.layerX;
+	mouseY = event.layerY;
 	if (mouseX < 0) mouseX = 0;
-	if (mousey < 0) mouseY = 0;
+	if (mouseY < 0) mouseY = 0;
+}
+
+function onClick(event) {
+	if(quit) return;
+	var circle;
+	console.log('mouse' + ': ' + mouseX + ' ' + mouseY);
+	for (var i=0; i<numCircles; i++) {
+		circle = circles[i];
+		console.log(i + ': ' + circle.x + ' ' + circle.y);
+		var dx = mouseX - circle.x;
+		var dy = mouseY - circle.y;
+		var distance = Math.sqrt(dx*dx + dy*dy);
+		if (distance < circle.size) {
+			circle.vx = 30;
+			circle.vy *= 5;
+		}
+	}
 }
 
 function initializeCircles() {
@@ -194,15 +210,16 @@ function initializeCircles() {
 function run() {
 	canvas.addEventListener('keydown',onKeyDown,false);
 	canvas.addEventListener('mousemove',onMouseMove,false);
+	canvas.addEventListener('click',onClick,false);
 	// canvas.setAttribute('tabindex','0');
 	// canvas.focus();
 	initializeCircles();
 	intervalId = setInterval(render,timerDelay);
 }
 
-function drawCircle(ctx, cx, cy, radius) {
-	ctx.arc(cx,cy,radius,0,2*Math.PI,true);
-}
+// function drawCircle(ctx, cx, cy, radius) {
+// 	ctx.arc(cx,cy,radius,0,2*Math.PI,true);
+// }
 
 run();
 
