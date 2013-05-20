@@ -34,22 +34,124 @@ var ctx = canvas.getContext("2d");
 ctx.globalAlpha=.7;
 
 var intervalId;
-var timerDelay = 10;
-var rectLeft = 0;
+var timerDelay = 20;
+var cx = 0;
+var cy = 180;
+var radius = 50;
+var circles = [];
+var numCircles = 5;
+var mouseX = 0;
+var mouseY = 0;
 var quit = false;
 
-function redrawAll() {
-	//erase everything
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	ctx.fillRect(rectLeft,180,40,40);
-	//ctx.font="20px Arial";
-	//ctx.fillText("Press 'q' to quit.",20,40);
-}
-function onTimer() {
+function render() {
 	if (quit) return;
-	rectLeft = (rectLeft+1)%canvas.width;
-	redrawAll();
+	for (var i=0; i<numCircles; i++) {
+		updateMotion(circles[i]);
+	}
+
+	draw();
 }
+
+function draw() {
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	var circle;
+	for (var i=0; i<numCircles; i++) {
+		circle = circles[i];
+		ctx.fillStyle = circle.color;
+		ctx.beginPath();
+		ctx.arc(circle.x,circle.y,circle.size,0,Math.PI*2,true);
+		ctx.closePath();
+		ctx.fill();
+	}
+}
+
+function updateMotion(circle) {
+	checkCollisions();
+
+	var gravity = 0;
+	var drag = 1; //friction
+
+	// if (circle.dragging) {
+	// 	circle.vx = circle.x - circle.ox;
+	// 	circle.vy = circle.y - circle.oy;
+	// 	circle.ox = circle.x;
+	// 	circle.oy = circle.y;
+
+	// 	circle.x = mouseX;
+	// 	circle.y = mouseY;
+
+	// 	if ((circle.x + circle.size) > canvas.width) {
+	// 		circle.x = canvas.width - circle.size;
+	// 	}
+	// 	else if ((circle.x - circle.size) < 0) {
+	// 		circle.x = 0 + circle.size;
+	// 	}
+	// 	if ((circle.y + circle.size) > canvas.height) {
+	// 		circle.y = canvas.height - circle.size;
+	// 	}
+	// 	else if ((circle.y - circle.size) < 0) {
+	// 		circle.y = 0 + circle.size;
+	// 	}
+	// }
+	// else {
+		circle.x += circle.vx;
+		circle.y += circle.vy;
+
+		if ((circle.x + circle.size) > canvas.width) {
+			circle.x = canvas.width - circle.size;
+			circle.vx = -circle.vx;
+		}
+		else if ((circle.x - circle.size) < 0) {
+			circle.x = 0 + circle.size;
+			circle.vx = -circle.vx;
+		}
+		if ((circle.y + circle.size) > canvas.height) {
+			circle.y = canvas.height - circle.size;
+			circle.vy = -circle.vy;
+		}
+		else if ((circle.y - circle.size) < 0) {
+			circle.y = 0 + circle.size;
+			circle.vy = -circle.vy;
+		}
+		circle.vx *= drag;
+		circle.vy *= drag;
+		circle.vy += gravity;
+// {
+}
+
+function checkCollisions() {
+	var spring = .5;
+
+	for (var i=0; i<numCircles-1;++i) {
+		var circle0 = circles[i];
+		for (var j=i+1; j<numCircles;++j) {
+			var circle1 = circles[j];
+			var dx = circle1.x - circle0.x;
+			var dy = circle1.y - circle0.y;
+			var distance = Math.sqrt(dx*dx+dy*dy);
+			var collDist = circle0.size+circle1.size;
+
+			if (distance < collDist) {
+				var angle = Math.atan2(dy,dx);
+				var tx = circle0.x+dx/distance*collDist;
+				var ty = circle0.y+dy/distance*collDist;
+				var ax = (tx - circle1.x);
+				var ay = (ty - circle1.y);
+
+				circle0.x -= ax;
+				circle0.y -= ay;
+				circle1.x += ax;
+				circle1.y += ay;
+				circle0.vx -= (ax*spring);
+				circle0.vy -= (ay*spring);
+				circle1.vx += (ax*spring);
+				circle1.vy += (ay*spring);
+			}
+		}
+	}
+}
+
 function onKeyDown(event) {
 	if (quit) return;
 	var qCode=81;
@@ -60,19 +162,44 @@ function onKeyDown(event) {
 		quit=true;
 	}
 }
+
+function onMouseMove(event) {
+	if (quit) return;
+	mouseX = event.pageX - canvas.offsetLeft;
+	mouseY = event.pageY - canvas.offsetRight;
+	if (mouseX < 0) mouseX = 0;
+	if (mousey < 0) mouseY = 0;
+}
+
+function initializeCircles() {
+	for (var i=0; i<numCircles; i++) {
+		var circle = {};
+		circle.color = "#E3DCC5";
+		circle.vx = Math.random()*50 - 25;
+		circle.vy = Math.random()*50 - 25;
+		circle.size = 35;
+		circle.x = Math.random()*canvas.width;
+		circle.y = Math.random()*canvas.height;
+		circles[i] = circle;
+	}
+}
+
 function run() {
 	canvas.addEventListener('keydown',onKeyDown,false);
-	canvas.setAttribute('tabindex','0');
-	canvas.focus();
-	intervalId = setInterval(onTimer,timerDelay);
+	canvas.addEventListener('mousemove',onMouseMove,false);
+	// canvas.setAttribute('tabindex','0');
+	// canvas.focus();
+	initializeCircles();
+	intervalId = setInterval(render,timerDelay);
+}
+
+function drawCircle(ctx, cx, cy, radius) {
+	ctx.arc(cx,cy,radius,0,2*Math.PI,true);
 }
 
 run();
 
-/*function circle(ctx, cx, cy, radius) {
-	ctx.arc(cx,cy,radius,0,2*Math.PI,true);
-}
-
+/*
 ctx.beginPath();
 var cx = 200;
 var cy = 200;
