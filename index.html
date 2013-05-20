@@ -12,19 +12,23 @@ who is dylan koenig?
 </head>
 
 <body>
-<canvas id="myCanvas"  style="border:1px solid #000000;">No canvas available! </canvas>
+<script type="text/javascript" src=jquery-1.9.1.min.js"></script>
+<canvas id="myCanvas"  style="border:1px solid #FDF6E3;">No canvas available! </canvas>
 <script>
 window.onload = function(){
 	var canvas = document.getElementById("myCanvas");
-	canvas.width = canvas.clientWidth-100;
-	canvas.height = canvas.clientHeight-100;
-	
+	// canvas.width = canvas.clientWidth-100;
+	// canvas.height = canvas.clientHeight-100;
+	canvas.width = $(document).width();
+	canvas.height = $(document).height();
 }
 
 window.onresize = function(){
 	var canvas = document.getElementById("myCanvas");
-	canvas.width = canvas.clientWidth;
-	canvas.height = canvas.clientHeight;
+	// canvas.width = canvas.clientWidth-100;
+	// canvas.height = canvas.clientHeight-100;
+	canvas.width = $(document).width();
+	canvas.height = $(document).height();
 }
 </script>
 
