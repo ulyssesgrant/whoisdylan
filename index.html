@@ -55,6 +55,7 @@ function render() {
 
 function draw() {
 	ctx.clearRect(0,0,canvas.width,canvas.height);
+	// ctx.fillStyle = "rgba(253,246,227,.75)";
 	var circle;
 	for (var i=0; i<numCircles; i++) {
 		circle = circles[i];
@@ -64,6 +65,8 @@ function draw() {
 		ctx.closePath();
 		ctx.fill();
 	}
+	ctx.fillStyle = "rgba(0,0,0,.75)";
+	ctx.fillRect(canvas.width/4.0,canvas.height/4.0,parseFloat((3.0/4.0)*canvas.width),parseFloat((3.0/4.0)*canvas.height));
 }
 
 function updateMotion(circle) {
@@ -175,11 +178,11 @@ function initializeCircles() {
 	for (var i=0; i<numCircles; i++) {
 		var circle = {};
 		circle.color = "#E3DCC5";
-		circle.vx = Math.random()*50 - 25;
-		circle.vy = Math.random()*50 - 25;
-		circle.size = 35;
-		circle.x = Math.random()*canvas.width;
-		circle.y = Math.random()*canvas.height;
+		circle.vx = Math.random()*5;
+		circle.vy = Math.random()*5;
+		circle.size = Math.random()*10 + 30;
+		circle.x = Math.random()*canvas.clientWidth-100;
+		circle.y = Math.random()*canvas.clientHeight-100;
 		circles[i] = circle;
 	}
 }
