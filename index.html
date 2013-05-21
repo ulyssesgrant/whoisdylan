@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="iso-8859-1">
 <meta name="author" content="Dylan Koenig">
 <meta name="description" content="who is dylan?">
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -10,27 +10,28 @@
 who is dylan koenig?
 </title>
 </head>
-
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 <body>
 <!-- <script type="text/javascript" src="jquery&#45;1.9.1.min.js"></script> -->
 <canvas id="myCanvas"  style="border:1px solid #FDF6E3;">No canvas available! </canvas>
-<script>
-window.onload = function(){
-	var canvas = document.getElementById("myCanvas");
-	canvas.width = canvas.clientWidth-100;
-	canvas.height = canvas.clientHeight-100;
-}
 
-window.onresize = function(){
-	var canvas = document.getElementById("myCanvas");
-	canvas.width = canvas.clientWidth-100;
-	canvas.height = canvas.clientHeight-100;
-}
-</script>
+<!-- <script> -->
+<!-- //  -->
+<!-- // // window.onload = function(){ -->
+<!-- // // 	var canvas = document.getElementById("myCanvas"); -->
+<!-- // // 	canvas.width = canvas.clientWidth&#45;100; -->
+<!-- // // 	canvas.height = canvas.clientHeight&#45;100; -->
+<!-- // // } -->
+<!-- // //  -->
+<!-- // // window.onresize = function(){ -->
+<!-- // // 	var canvas = document.getElementById("myCanvas"); -->
+<!-- // // 	canvas.width = canvas.clientWidth&#45;100; -->
+<!-- // // 	canvas.height = canvas.clientHeight&#45;100; -->
+<!-- // // } -->
+<!-- </script> -->
 
 <script>
 var canvas = document.getElementById("myCanvas");
-var ctx = canvas.getContext("2d");
 var intervalId;
 var timerDelay = 20;
 var cx = 0;
@@ -42,6 +43,25 @@ var mouseX = 0;
 var mouseY = 0;
 var quit = false;
 
+var browserX = window.screenX;
+var browserY = window.screenY;
+var canvasWidth = $(document).width();
+var canvasHeight = $(document).height();
+canvas.width = canvasWidth;
+canvas.height = canvasHeight;
+
+window.onresize = function(event) {
+	canvas.width = 10;
+	canvas.height = 10;
+	canvasWidth = $(document).width();
+	canvasHeight = $(document).height();
+	canvas.width = canvasWidth;
+	canvas.height = canvasHeight;
+}
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
 function render() {
 	if (quit) return;
 	for (var i=0; i<numCircles; i++) {
@@ -52,7 +72,7 @@ function render() {
 }
 
 function draw() {
-	ctx.clearRect(0,0,canvas.width,canvas.height);
+	ctx.clearRect(0,0,canvasWidth,canvasHeight);
 	// ctx.fillStyle = "rgba(253,246,227,.75)";
 	var circle;
 	for (var i=0; i<numCircles; i++) {
@@ -64,8 +84,8 @@ function draw() {
 		ctx.fill();
 	}
 	ctx.fillStyle = "rgba(0,0,0,.75)";
-	var x = canvas.width*.25;
-	var y = canvas.height*.25;
+	var x = canvasWidth*.25;
+	var y = canvasHeight*.25;
 	ctx.fillRect(x,y,x*2,y*2);
 	// alert(x2 + ' ' + y2);
 }
@@ -102,16 +122,16 @@ function updateMotion(circle) {
 		circle.x += circle.vx;
 		circle.y += circle.vy;
 
-		if ((circle.x + circle.size) > canvas.width) {
-			circle.x = canvas.width - circle.size;
+		if ((circle.x + circle.size) > canvasWidth) {
+			circle.x = canvasWidth - circle.size;
 			circle.vx = -circle.vx;
 		}
 		else if ((circle.x - circle.size) < 0) {
 			circle.x = 0 + circle.size;
 			circle.vx = -circle.vx;
 		}
-		if ((circle.y + circle.size) > canvas.height) {
-			circle.y = canvas.height - circle.size;
+		if ((circle.y + circle.size) > canvasHeight) {
+			circle.y = canvasHeight - circle.size;
 			circle.vy = -circle.vy;
 		}
 		else if ((circle.y - circle.size) < 0) {
@@ -162,17 +182,17 @@ function onKeyDown(event) {
 	if (event.keyCode === qCode) {
 		clearInterval(intervalId);
 		ctx.fillStyle="rgba(128,128,128,.75)";
-		ctx.fillRect(0,0,canvas.width,canvas.height);
+		ctx.fillRect(0,0,canvasWidth,canvasHeight);
 		quit=true;
 	}
 }
 
 function onMouseMove(event) {
 	if (quit) return;
-	// mouseX = event.pageX - canvas.offsetLeft;
-	// mouseY = event.pageY - canvas.offsetTop;
-	mouseX = event.layerX;
-	mouseY = event.layerY;
+	mouseX = event.pageX;
+	mouseY = event.pageY;
+	// mouseX = event.layerX;
+	// mouseY = event.layerY;
 	if (mouseX < 0) mouseX = 0;
 	if (mouseY < 0) mouseY = 0;
 }
