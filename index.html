@@ -208,8 +208,10 @@ function onClick(event) {
 		var dy = mouseY - circle.y;
 		var distance = Math.sqrt(dx*dx + dy*dy);
 		if (distance < circle.size) {
-			circle.vx *= 2;
-			circle.vy *= 2;
+			if (circle.vx <= 30 && circle.vy <= 30) {
+				circle.vx *= 2;
+				circle.vy *= 2;
+			}
 		}
 	}
 }
