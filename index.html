@@ -12,6 +12,12 @@ who is dylan koenig?
 </head>
 <script type="text/javascript" src="jquery-1.9.1.min.js"></script>
 <body>
+
+<div>
+<p> ? </p>
+</div>
+
+<!-- circles begin here -->
 <!-- <script type="text/javascript" src="jquery&#45;1.9.1.min.js"></script> -->
 <canvas id="myCanvas"  style="border:1px solid #FDF6E3;">No canvas available! </canvas>
 
@@ -83,10 +89,11 @@ function draw() {
 		ctx.closePath();
 		ctx.fill();
 	}
-	ctx.fillStyle = "rgba(0,0,0,.75)";
-	var x = canvasWidth*.25;
-	var y = canvasHeight*.25;
-	ctx.fillRect(x,y,x*2,y*2);
+	// make grey rectangle (wtf is up with the .5 and .25?)
+	// ctx.fillStyle = "rgba(0,0,0,.75)";
+	// var x = canvasWidth*.25;
+	// var y = canvasHeight*.25;
+	// ctx.fillRect(x,y,x*2,y*2);
 	// alert(x2 + ' ' + y2);
 }
 
@@ -208,7 +215,7 @@ function onClick(event) {
 		var dy = mouseY - circle.y;
 		var distance = Math.sqrt(dx*dx + dy*dy);
 		if (distance < circle.size) {
-			if (circle.vx <= 30 && circle.vy <= 30) {
+			if (circle.vx <= 10 && circle.vy <= 10) {
 				circle.vx *= 2;
 				circle.vy *= 2;
 			}
@@ -253,5 +260,6 @@ var radius = 100;
 circle(ctx,cx,cy,radius);
 ctx.fill();*/
 </script>
+
 </body>
 </html>
