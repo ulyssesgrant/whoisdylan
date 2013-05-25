@@ -23,14 +23,18 @@ div > p {
 	margin-top: -3%;
 }
 
-#rocket a {
+#rocket {
+	z-index: 2;
+	position: fixed;
 	text-decoration: none;
+	bottom: 0;
+	right: 0;
+	margin-right: .5%;
+	margin-bottom: .5%;
 }
 
-#rocket {
+#rocket a {
 	text-decoration: none;
-	padding-left: 95%;
-	padding-top: 11%;
 }
 
 #nav {
