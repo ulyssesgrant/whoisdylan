@@ -844,6 +844,14 @@ span + .edit-link:before,
 	padding: 0 10px;
 }
 
+.home-icon:before {
+	content: '\f409';
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	font: normal 28px 'Genericons';
+	vertical-align: -8px;
+}
+
 .site-title {
 	float: left;
 	font-size: 18px;
@@ -875,7 +883,7 @@ span + .edit-link:before,
 }
 
 .search-toggle:before {
-	color: #fff;
+	color: #fdf6e3;
 	content: "\f400";
 	font-size: 20px;
 	margin-top: 14px;
@@ -2075,6 +2083,14 @@ a.post-thumbnail:hover {
 
 /* Primary Sidebar, Footer Sidebar */
 
+.github-icon:before {
+	content: '\f200';
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	font: normal 16px 'Genericons';
+	vertical-align: middle;
+}
+
 .widget {
 	font-size: 14px;
 	-webkit-hyphens: none;
@@ -2088,11 +2104,10 @@ a.post-thumbnail:hover {
 }
 
 .widget a {
-	color: #fff;
+	color: #fdf6e3;
 }
 
 .widget a:hover {
-	/*color: rgba(232,35,40,.75);*/
 	color: rgba(232,35,40,.75);
 }
 
@@ -2268,7 +2283,7 @@ a.post-thumbnail:hover {
 
 .widget-title,
 .widget-title a {
-	color: #fff;
+	color: #fdf6e3;
 }
 
 .widget-title a:hover {
