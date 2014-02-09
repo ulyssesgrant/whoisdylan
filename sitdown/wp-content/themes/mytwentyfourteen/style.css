@@ -2091,6 +2091,14 @@ a.post-thumbnail:hover {
 	vertical-align: middle;
 }
 
+.twitter-icon:before {
+	content: '\f202';
+	display: inline-block;
+	-webkit-font-smoothing: antialiased;
+	font: normal 16px 'Genericons';
+	vertical-align: middle;
+}
+
 .widget {
 	font-size: 14px;
 	-webkit-hyphens: none;

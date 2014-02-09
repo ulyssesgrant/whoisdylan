@@ -6,9 +6,9 @@
 #card {
 	background-color: rgba(232,35,40,.75);
 	width: 33.3%;
-	height: 33.3%;
-	min-height: 300px;
-	min-width: 500px;
+	height: 300px;
+	/*min-height: 300px;*/
+	min-width: 200px;
 	z-index: 2;
 	position: absolute;
 	left: 33.3%;
